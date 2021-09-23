@@ -2,61 +2,21 @@ package main
 
 import (
 	"fmt"
-	"regexp"
-	"strconv"
 
-	"tpgolang.com/model"
+	"tudai2021.com/model"
 )
 
-//Creo un main donde defino la cadena a usar y la funcion encargada de darmelo.
 func main() {
-	c := "TX03ABC" //agregar cadena
-	fmt.Println("CADENA ENTRADA", c)
-	comprobarCadena(c)
-}
-
-func comprobarCadena(c string) {
-
-	//Comprueba que el LARGO DEL VALOR sea en numeros
-	var IsNumber = regexp.MustCompile(`^[0-9]+$`).MatchString
-	var IsLetter = regexp.MustCompile(`^[a-zA-Z]+$`).MatchString
-	a := IsNumber(c[2:4])
-
-	//mientras que la cadena sea mayor o igual a 4, y el largo del valor sea en numeros.
-	if len("TX03ABC") >= 5 && a {
-		//Convierto a int, el largo del valor que esta en string.
-		length, err := strconv.Atoi(c[2:4]) //"TX03ABC"
-		fmt.Println(err)
-		//mientras que la cadena tenga la misma cantidad de valores que lenght.
-		//y sus primeros 2 caracteres sean TX o NN entra.
-		if len(c[4:]) == length { //"TX 03 ABC"
-
-			if (c[:2] == "TX") || (c[:2] == "NN") {
-				//creo las siguientes variables para revisar que los valores sean numeros o letras.
-				isNN := IsNumber(c[4:])
-				isTX := IsLetter(c[4:])
-
-				//si la cadena incia con TX y esta compuesta por solo letras, entra.
-				if (c[:2] == "TX") && isTX {
-					cadena := model.NewCadena(c[:2], length, c[4:])
-					fmt.Println("CADENA SALIDA:", cadena)
-				} else if (c[:2] == "NN") && isNN {
-					//si la cadena incia con NN y esta compuesta por solo numeros, entra.
-					cadena := model.NewCadena(c[:2], length, c[4:])
-					fmt.Println("CADENA SALIDA:", cadena)
-				} else {
-					fmt.Println("NO CORRESPONDE EL TIPO CON SU CONTENIDO")
-				}
-
-			} else {
-				fmt.Println("NO ES UN TIPO VALIDO")
-			}
-		} else {
-			fmt.Println("EL LARGO NO ES VALIDO")
-		}
-
+	//declaro el valor de la cadena a trasnformar en una estructura.
+	cadena := "TX00"
+	//asigno a la variable "c y err" el llamado a la funcion ComprobarCadena con el valor anterior.
+	c, err := model.ComprobarCadena(cadena)
+	//si el resultado es correcto, el error seria null (nil aca en lang) (err = nill)
+	if err == nil {
+		//imprimo el valor de c
+		fmt.Println(c)
 	} else {
-		fmt.Println("NO ES UNA CADENA VALIDA")
+		//en otro caso, imprimo el error utilizando la funcion vista en clase "panic" cortando la funcion del programa.
+		panic(err)
 	}
-
 }
